@@ -3,5 +3,4 @@
 namespace PracticeExam1.Domain.Repositories;
 
 public interface ICustomerRepository : IRepository<Customer>
-{
-}
+{ }

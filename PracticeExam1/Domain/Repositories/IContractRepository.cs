@@ -3,5 +3,4 @@
 namespace PracticeExam1.Domain.Repositories;
 
 public interface IContractRepository : IRepository<Contract>
-{
-}
+{ }

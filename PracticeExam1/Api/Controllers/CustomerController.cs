@@ -69,15 +69,15 @@ public class CustomerController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Contract>> Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
         var existingCustomer = await _customer.FindByIdAsync(id);
 
         if (existingCustomer == null)
             return NotFound();
 
-        await _customer.DeleteAsync(id);
+        await _customer.DeleteAsync(existingCustomer);
 
-        return Ok(existingCustomer);
+        return Ok();
     }
 }

@@ -2,15 +2,15 @@
 
 public interface IRepository<TEntity> where TEntity : IEntity
 {
-    public Task<TEntity?> FindAllAsync();
+    public Task<List<TEntity>> FindAllAsync();
 
     public Task<TEntity?> FindByIdAsync(int id);
 
-    public Task<TEntity?> AddAsync(TEntity entity);
+    public Task<TEntity> AddAsync(TEntity entity);
 
-    public Task<TEntity?> UpdateAsync(TEntity entity);
+    public Task<TEntity> UpdateAsync(TEntity entity);
 
-    public Task<TEntity?> DeleteAsync(int id);
+    public Task DeleteAsync(TEntity entity);
 }
 
 public interface IEntity

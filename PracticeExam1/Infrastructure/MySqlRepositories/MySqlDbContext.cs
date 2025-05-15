@@ -10,4 +10,10 @@ public class MySqlDbContext : DbContext
     public DbSet<Contract> Contracts { get; set; }
 
     public MySqlDbContext(DbContextOptions<MySqlDbContext> options) : base(options) {}
+
+    protected override void OnConfiguring(DbContextOptionsBuilder builder)
+    {
+        const string connString = "DataSource = localhost; DataBase = CarContract; UserID = root; Password = root";
+        // builder.UseMySql(connString, ServerVersion.AutoDetect(connString));
+    }
 }

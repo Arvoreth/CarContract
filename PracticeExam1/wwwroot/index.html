@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Signal R Loading Screen</title>
+    <script src="signalr.min.js"></script>
+    <style>
+        #canvas {
+            min-height: 200px;
+            width: 600px;
+            background-color: blanchedalmond;
+        }
+    </style>
+</head>
+<body>
+    <h1>Super cool game.</h1>
+    <div id="canvas"></div>
+    <button type="button" id="startbutton">Start Loading</button>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+
+        function startLoading() {
+            progressLoading("Starting Loading process!");
+        }
+
+        function progressLoading(message, percent = 0) {
+            var elem = document.createElement("div");
+
+            if (percent > 0) {
+                message += ` ${percent}%<br>`
+                for (let i = 0; i < percent; ++i)
+                    message += "|";
+            }
+            elem.innerHTML = message;
+            canvas.replaceChildren(elem);
+        }
+
+        function startGame() {
+            progressLoading("Game is Starting!");
+        }
+
+        function startSignalR() {
+
+            //Signal R verbindung erstellen
+            const connection = new signalR.HubConnectionBuilder().withUrl("/processHub").build();
+
+            connection.on('SetProgress', (progress, message) => {
+                progressLoading(message, progress)
+            });
+
+            connection.on('Start', () => {
+                startGame();
+            });
+
+            document.getElementById("startbutton").addEventListener("click", () => {
+
+                connection.invoke("StartProcess");
+                /*
+                setTimeout(() => progressLoading("Fetching...", 20), 600);
+                setTimeout(() => progressLoading("Connecting to Database..", 40), 1200);
+                setTimeout(() => progressLoading("Scanning...", 60), 1800);
+                setTimeout(() => progressLoading("Building Level...", 80), 2400);
+                setTimeout(() => progressLoading("Finishing...", 100), 3000);
+                */
+            });
+
+
+            connection.start();
+        }
+
+        startSignalR();
+    </script>
+</body>
+</html>

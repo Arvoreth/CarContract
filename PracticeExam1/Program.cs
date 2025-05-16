@@ -22,6 +22,11 @@ builder.Services.AddScoped<IContractRepository, ContractRepository>();
 
 var app = builder.Build();
 
+var factory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using var scope = factory.CreateScope();
+using var context = scope.ServiceProvider.GetRequiredService<MySqlDbContext>();
+Seeder.FillMockData(context);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -30,10 +35,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// MockData
-//MySqlDbContext context = new();
-//Seeder.FillMockData(context);
 
 app.MapControllers();
 

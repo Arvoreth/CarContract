@@ -13,7 +13,23 @@ public class MySqlDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        const string connString = "DataSource = localhost; DataBase = CarContract; UserID = root; Password = root";
-        // builder.UseMySql(connString, ServerVersion.AutoDetect(connString));
+        const string connString = "DataSource=localhost;DataBase=CarContract;UserID=root;Password=root";
+        builder.UseMySql(connString, ServerVersion.AutoDetect(connString));
     }
+
+    // other method to add seed data:
+    /*
+    protected void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Customer>()
+            .HasData(new Customer
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Phone = "123-456-7890",
+                DriverLicense = "DL123456"
+            });
+    }
+    */
 }

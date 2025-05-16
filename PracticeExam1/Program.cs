@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using PracticeExam1;
 using PracticeExam1.Domain.Repositories;
 using PracticeExam1.Infrastructure.MySqlRepositories;
+using PracticeExam1.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +14,7 @@ builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
 var connectionStrings = builder.Configuration.GetConnectionString("mySqlDb");
-builder.Services.AddDbContext<MySqlDbContext>(options =>
-    options.UseMySql(connectionStrings, ServerVersion.AutoDetect(connectionStrings)));
+builder.Services.AddDbContext<MySqlDbContext>();
 
 builder.Services.AddScoped<ICarRepository, CarRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -32,13 +32,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // MockData
-MySqlDbContext context = new();
-
-Seeder.FillDatabaseWithMockData(context);
-
-// app.UseAuthorization();
+//MySqlDbContext context = new();
+//Seeder.FillMockData(context);
 
 app.MapControllers();
+
+app.MapHub<ProcessHub>("/processHub"); 
 
 app.UseStaticFiles();
 
